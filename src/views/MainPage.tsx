@@ -51,7 +51,6 @@ const MainPage: React.FC = () => {
     <>
       Current Page number: {pageNumber}
       ItemId: {itemId}
-      IsLoading: {isLoading.toString()}
       <ErrorBoundary>
         <BuggyButton />
       </ErrorBoundary>

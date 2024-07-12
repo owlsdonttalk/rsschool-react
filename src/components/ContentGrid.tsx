@@ -10,9 +10,17 @@ const ContentGrid: React.FC<ContentGridProps> = (props) => {
   }, [props.items]);
 
   return (
-    <div className="content-grid">
-      {items?.map((item, index) => <GridElement key={index} element={item} />)}
-    </div>
+    <>
+      {items.length === 0 ? (
+        'No results'
+      ) : (
+        <div className="content-grid">
+          {items?.map((item, index) => (
+            <GridElement key={index} element={item} />
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 
