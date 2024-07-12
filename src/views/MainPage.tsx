@@ -8,18 +8,22 @@ import {
   ErrorBoundary,
   SearchInput,
   ContentGrid,
+  Loader,
 } from '@components';
-import { useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 
 const MainPage: React.FC = () => {
   const [initialSearchValue, setInitialSearchValue] = useState<string | null>(
     null,
   );
   const [starWarsData, setStarWarsData] = useState<StarWarsData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { pageNumber } = useParams<{ pageNumber: number | null }>();
+  const { itemId } = useParams<{ pageNumber: number | null }>();
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const savedInputValue = localStorage.getItem(INPUT_VALUE);
       const data = await fetchStarWarsData(savedInputValue);
 
@@ -27,25 +31,38 @@ const MainPage: React.FC = () => {
       setStarWarsData(data);
     };
 
-    fetchData();
+    fetchData().then(() => {
+      setIsLoading(false);
+    });
   }, []);
 
   const handleSearch = async (value: string | null) => {
+    setIsLoading(true);
     const data = await fetchStarWarsData(value);
 
     if (data) {
       setStarWarsData(data);
     }
+
+    setIsLoading(false);
   };
 
   return (
     <>
       Current Page number: {pageNumber}
+      ItemId: {itemId}
+      IsLoading: {isLoading.toString()}
       <ErrorBoundary>
         <BuggyButton />
       </ErrorBoundary>
       <SearchInput initialValue={initialSearchValue} onSearch={handleSearch} />
-      <ContentGrid items={filterPersonData(starWarsData?.results ?? [])} />
+      <div>
+        <Loader isLoading={isLoading} />
+        {isLoading || (
+          <ContentGrid items={filterPersonData(starWarsData?.results ?? [])} />
+        )}
+        <Outlet />
+      </div>
     </>
   );
 };

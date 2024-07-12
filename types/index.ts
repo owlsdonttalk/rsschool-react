@@ -24,6 +24,10 @@ export interface GridElementProps {
   element: Record<string, string>;
 }
 
+export interface LoaderProps {
+  isLoading: boolean;
+}
+
 export interface ErrorBoundaryProps {
   children: React.ReactNode;
 }
