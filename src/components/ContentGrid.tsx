@@ -1,31 +1,19 @@
-import React from 'react';
-import { ContentGridProps, ContentGridState } from '@types';
+import React, { useEffect, useState } from 'react';
+import { ContentGridProps } from '@types';
 import GridElement from './GridElement.tsx';
 
-class ContentGrid extends React.Component<ContentGridProps, ContentGridState> {
-  constructor(props: ContentGridProps) {
-    super(props);
+const ContentGrid: React.FC<ContentGridProps> = (props) => {
+  const [items, setItems] = useState<Record<string, string>[]>(props.items);
 
-    this.state = {
-      items: this.props.items,
-    };
-  }
+  useEffect(() => {
+    setItems(props.items);
+  }, [props.items]);
 
-  componentDidUpdate(prevProps: ContentGridProps) {
-    if (prevProps.items !== this.props.items) {
-      this.setState({ items: this.props.items });
-    }
-  }
-
-  render() {
-    return (
-      <div className="content-grid">
-        {this.state.items?.map((item, index) => (
-          <GridElement key={index} element={item} />
-        ))}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="content-grid">
+      {items?.map((item, index) => <GridElement key={index} element={item} />)}
+    </div>
+  );
+};
 
 export default ContentGrid;

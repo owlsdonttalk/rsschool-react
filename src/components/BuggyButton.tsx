@@ -1,28 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-class BuggyButton extends React.Component<
-  Record<string, boolean>,
-  Record<string, boolean>
-> {
-  constructor(props: Record<string, boolean>) {
-    super(props);
-    this.state = { hasError: false };
-    this.handleClick = this.handleClick.bind(this);
-  }
+const BuggyButton: React.FC = () => {
+  const [hasError, setHastError] = useState<boolean>(false);
 
-  handleClick() {
-    this.setState((prevState) => ({
-      ...prevState,
-      hasError: true,
-    }));
-  }
+  const handleClick = () => {
+    setHastError(true);
+  };
 
-  render() {
-    if (this.state.hasError) {
+  useEffect(() => {
+    if (hasError) {
       throw new Error('I crashed!');
     }
-    return <button onClick={this.handleClick}>Test error boundary</button>;
-  }
-}
+  }, [hasError]);
+
+  return <button onClick={handleClick}>Test error boundary</button>;
+};
 
 export default BuggyButton;
