@@ -16,6 +16,7 @@ interface AppState {
 class App extends Component<Record<string, never>, AppState> {
   constructor(props: Record<string, never>) {
     super(props);
+
     this.state = {
       initialSearchValue: null,
       starWarsData: null,
@@ -46,14 +47,14 @@ class App extends Component<Record<string, never>, AppState> {
       <>
         <ErrorBoundary>
           <BuggyButton />
-          <SearchInput
-            initialValue={this.state.initialSearchValue}
-            onSearch={this.handleSearch}
-          />
-          <ContentGrid
-            items={filterPersonData(this.state.starWarsData?.results ?? [])}
-          />
         </ErrorBoundary>
+        <SearchInput
+          initialValue={this.state.initialSearchValue}
+          onSearch={this.handleSearch}
+        />
+        <ContentGrid
+          items={filterPersonData(this.state.starWarsData?.results ?? [])}
+        />
       </>
     );
   }
