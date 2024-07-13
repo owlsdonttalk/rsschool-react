@@ -12,7 +12,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
@@ -27,7 +27,7 @@
     /* Aliases */
     "baseUrl": "./",
     "paths": {
-      "@types": ["types"],
+      "@types": ["types", "@testing-library/jest-dom"],
       "@constants": ["constants"],
       "@helpers": ["helpers"],
       "@hooks": ["hooks"],
@@ -35,5 +35,12 @@
       "@": ["src"]
     }
   },
-  "include": ["src", "helpers", "types", "constants"]
+  "include": [
+    "src",
+    "helpers",
+    "types",
+    "constants",
+    "src/tests",
+    "./**/*.tsx",
+  ]
 }

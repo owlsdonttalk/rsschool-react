@@ -13,4 +13,11 @@ export default defineConfig({
       '@helpers': path.resolve(__dirname, './helpers'),
     },
   },
+  test: {
+    include: ['src/tests/**/*.test.ts', 'src/tests/**/*.test.tsx'],
+    exclude: ['**/node_modules/**'],
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: 'src/tests/setup.ts',
+  },
 });
