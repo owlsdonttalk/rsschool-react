@@ -3,10 +3,12 @@ import { SearchInputProps } from '@types';
 import { INPUT_VALUE } from '@constants';
 
 const SearchInput: React.FC<SearchInputProps> = (props) => {
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>(
+    props.initialValue || '',
+  );
 
   useEffect(() => {
-    setInputValue(props.initialValue);
+    setInputValue(props.initialValue || '');
   }, [props.initialValue]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,10 +16,12 @@ const SearchInput: React.FC<SearchInputProps> = (props) => {
   };
 
   const handleSearchClick = () => {
-    props.onSearch(inputValue?.length > 0 ? inputValue : null);
-    inputValue
-      ? localStorage.setItem(INPUT_VALUE, inputValue)
-      : localStorage.removeItem(INPUT_VALUE);
+    props.onSearch(inputValue.length > 0 ? inputValue : null);
+    if (inputValue) {
+      localStorage.setItem(INPUT_VALUE, inputValue);
+    } else {
+      localStorage.removeItem(INPUT_VALUE);
+    }
   };
 
   return (

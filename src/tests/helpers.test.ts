@@ -27,9 +27,9 @@ describe('filterPersonData function', () => {
         excessive_data_1: '1',
         excessive_data_2: '2',
       },
-    ];
+    ] as Record<string, string>[];
 
-    const filteredData = filterPersonData(testData as Record<string, string>[]);
+    const filteredData = filterPersonData(testData);
 
     expect(filteredData).toHaveLength(2);
     expect(filteredData[0]).toEqual({

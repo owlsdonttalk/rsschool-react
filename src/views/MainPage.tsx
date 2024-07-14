@@ -10,22 +10,29 @@ import {
   ContentGrid,
   Loader,
 } from '@components';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const MainPage: React.FC = () => {
   const [initialSearchValue, setInitialSearchValue] = useState<string | null>(
     null,
   );
   const [starWarsData, setStarWarsData] = useState<StarWarsData | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [nextPage, setNextPage] = useState<number | null>();
+  const [previousPage, setPreviousPage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { pageNumber } = useParams<{ pageNumber: number | null }>();
-  const { itemId } = useParams<{ pageNumber: number | null }>();
+  const { itemId } = useParams<{ itemId: number | null }>();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       const savedInputValue = localStorage.getItem(INPUT_VALUE);
-      const data = await fetchStarWarsData(savedInputValue);
+      const data = await fetchStarWarsData(savedInputValue, pageNumber);
+      setPreviousPage(data.previous?.split('=').pop() ?? null);
+      setNextPage(data.next?.split('=').pop() ?? null);
 
       setInitialSearchValue(savedInputValue);
       setStarWarsData(data);
@@ -34,7 +41,7 @@ const MainPage: React.FC = () => {
     fetchData().then(() => {
       setIsLoading(false);
     });
-  }, []);
+  }, [pageNumber]);
 
   const handleSearch = async (value: string | null) => {
     setIsLoading(true);
@@ -47,19 +54,60 @@ const MainPage: React.FC = () => {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    setCurrentPage(+pageNumber);
+  }, [pageNumber]);
+
+  const goToNextPage = async () => {
+    const currentPage = location.pathname;
+    const details = currentPage.indexOf('/details/');
+    let newPath = '/';
+    if (details !== -1) {
+      newPath = `/page/${nextPage}/details/${currentPage.split('/details/').pop()}`;
+    } else {
+      newPath = `/page/${nextPage}`;
+    }
+
+    await navigate(newPath);
+  };
+
+  const goToPreviousPage = async () => {
+    const previousPageNumber = +pageNumber - 1;
+    const currentPage = location.pathname;
+    const detailsIndex = currentPage.indexOf('/details/');
+    let newPath = '/';
+
+    if (detailsIndex !== -1) {
+      newPath = `/page/${previousPageNumber}/details/${currentPage.split('/details/').pop()}`;
+    } else {
+      newPath = `/page/${previousPageNumber}`;
+    }
+
+    await navigate(newPath);
+  };
+
   return (
     <>
-      Current Page number: {pageNumber}
-      ItemId: {itemId}
+      Current Page number: {pageNumber} {currentPage}
       <ErrorBoundary>
         <BuggyButton />
       </ErrorBoundary>
       <SearchInput initialValue={initialSearchValue} onSearch={handleSearch} />
-      <div>
-        <Loader isLoading={isLoading} />
-        {isLoading || (
-          <ContentGrid items={filterPersonData(starWarsData?.results ?? [])} />
-        )}
+      <div className={itemId ? 'main-wrapper-grid' : ''}>
+        <div>
+          <Loader isLoading={isLoading} />
+          {isLoading || (
+            <ContentGrid
+              items={filterPersonData(starWarsData?.results ?? [])}
+            />
+          )}
+          <button disabled={previousPage == null} onClick={goToPreviousPage}>
+            Previous Page
+          </button>
+          <button disabled={nextPage == null} onClick={goToNextPage}>
+            Next Page
+          </button>
+        </div>
         <Outlet />
       </div>
     </>
