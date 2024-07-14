@@ -4,7 +4,7 @@ import { fetchStarWarsDetailedData } from '@helpers';
 import { Loader } from '@components';
 
 const Details: React.FC = () => {
-  const { itemId } = useParams<{ itemId: string | null }>();
+  const { itemId } = useParams<{ itemId: string }>();
   const [detailedData, setDetailedData] = useState<Record<string, string>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();

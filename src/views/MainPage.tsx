@@ -18,11 +18,14 @@ const MainPage: React.FC = () => {
   );
   const [starWarsData, setStarWarsData] = useState<StarWarsData | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [nextPage, setNextPage] = useState<number | null>();
-  const [previousPage, setPreviousPage] = useState<number>(0);
+  const [nextPage, setNextPage] = useState<number | null>(null);
+  const [previousPage, setPreviousPage] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { pageNumber } = useParams<{ pageNumber: number | null }>();
-  const { itemId } = useParams<{ itemId: number | null }>();
+
+  // UseParams should have generic type that satisfies 'Record<string, string | undefined>'
+  const { pageNumber } = useParams<{ pageNumber: string }>();
+
+  const { itemId } = useParams<{ itemId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,9 +33,15 @@ const MainPage: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
       const savedInputValue = localStorage.getItem(INPUT_VALUE);
-      const data = await fetchStarWarsData(savedInputValue, pageNumber);
-      setPreviousPage(data.previous?.split('=').pop() ?? null);
-      setNextPage(data.next?.split('=').pop() ?? null);
+      const data = await fetchStarWarsData(
+        savedInputValue,
+        pageNumber ? parseInt(pageNumber) : null,
+      );
+
+      setPreviousPage(
+        data.previous ? parseInt(data.previous.split('=').pop()!) : null,
+      );
+      setNextPage(data.next ? parseInt(data.next.split('=').pop()!) : null);
 
       setInitialSearchValue(savedInputValue);
       setStarWarsData(data);
@@ -55,7 +64,9 @@ const MainPage: React.FC = () => {
   };
 
   useEffect(() => {
-    setCurrentPage(+pageNumber);
+    if (pageNumber) {
+      setCurrentPage(parseInt(pageNumber));
+    }
   }, [pageNumber]);
 
   const goToNextPage = async () => {
@@ -72,7 +83,7 @@ const MainPage: React.FC = () => {
   };
 
   const goToPreviousPage = async () => {
-    const previousPageNumber = +pageNumber - 1;
+    const previousPageNumber = pageNumber ? parseInt(pageNumber) - 1 : 0;
     const currentPage = location.pathname;
     const detailsIndex = currentPage.indexOf('/details/');
     let newPath = '/';

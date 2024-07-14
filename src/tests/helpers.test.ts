@@ -4,6 +4,7 @@ describe('filterPersonData function', () => {
   it('should filter person data correctly', () => {
     const testData = [
       {
+        url: 'https://swapi.dev/api/people/1/',
         name: 'Luke Skywalker',
         height: '172',
         mass: '77',
@@ -16,6 +17,7 @@ describe('filterPersonData function', () => {
         excessive_data_2: '2',
       },
       {
+        url: 'https://swapi.dev/api/people/2/',
         name: 'Leia Organa',
         height: '150',
         mass: '49',
@@ -33,6 +35,7 @@ describe('filterPersonData function', () => {
 
     expect(filteredData).toHaveLength(2);
     expect(filteredData[0]).toEqual({
+      id: '1',
       name: 'Luke Skywalker',
       height: '172',
       mass: '77',
@@ -43,6 +46,7 @@ describe('filterPersonData function', () => {
       gender: 'male',
     });
     expect(filteredData[1]).toEqual({
+      id: '2',
       name: 'Leia Organa',
       height: '150',
       mass: '49',
