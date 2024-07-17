@@ -53,3 +53,10 @@ export interface Person {
   birth_year: string;
   gender: string;
 }
+
+export type Theme = 'light' | 'dark';
+
+export interface ThemeContextProps {
+  theme: Theme;
+  toggleTheme: () => void;
+}

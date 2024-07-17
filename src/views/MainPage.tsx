@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { INPUT_VALUE } from '@constants';
 import { fetchStarWarsData, filterPersonData } from '@helpers';
-import { StarWarsData } from '@types';
+import { StarWarsData, ThemeContextProps } from '@types';
 import {
   BuggyButton,
   ErrorBoundary,
@@ -11,6 +11,7 @@ import {
   Loader,
 } from '@components';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useTheme } from '../../hooks/useThemeHook.ts';
 
 const MainPage: React.FC = () => {
   const [initialSearchValue, setInitialSearchValue] = useState<string | null>(
@@ -21,6 +22,7 @@ const MainPage: React.FC = () => {
   const [nextPage, setNextPage] = useState<number | null>(null);
   const [previousPage, setPreviousPage] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { theme, toggleTheme } = useTheme<ThemeContextProps>();
 
   // UseParams should have generic type that satisfies 'Record<string, string | undefined>'
   const { pageNumber } = useParams<{ pageNumber: string }>();
@@ -99,7 +101,11 @@ const MainPage: React.FC = () => {
 
   return (
     <>
-      Current Page number: {pageNumber} {currentPage}
+      <div className={theme === 'light' ? 'light-theme' : 'dark-theme'}>
+        <p>theme: {theme}</p>
+        <button onClick={toggleTheme}>Toggle Theme</button>
+      </div>
+      {currentPage}
       <ErrorBoundary>
         <BuggyButton />
       </ErrorBoundary>

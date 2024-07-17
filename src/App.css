@@ -80,3 +80,18 @@ p.content{
   top: 0;
   background: transparent;
 }
+
+.light-theme {
+  --background-color: white;
+  --text-color: black;
+}
+
+.dark-theme {
+  --background-color: black;
+  --text-color: white;
+}
+
+div {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
