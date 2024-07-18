@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import { INPUT_VALUE } from '@constants';
-import { fetchStarWarsData, filterPersonData } from '@helpers';
-import { StarWarsData } from '@types';
+import { filterPersonData } from '@helpers';
 import {
   BuggyButton,
   ErrorBoundary,
@@ -11,67 +10,55 @@ import {
   Loader,
 } from '@components';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useTheme } from '../../hooks/useThemeHook.ts';
+import { useTheme } from '../../hooks/useThemeHook';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../store/store';
+import { fetchStarWarsList, setCurrentPage } from '../store/starWarsListSlice';
 
 const MainPage: React.FC = () => {
-  const [initialSearchValue, setInitialSearchValue] = useState<string | null>(
-    null,
-  );
-  const [starWarsData, setStarWarsData] = useState<StarWarsData | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [nextPage, setNextPage] = useState<number | null>(null);
-  const [previousPage, setPreviousPage] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { theme, toggleTheme } = useTheme();
-
-  // UseParams should have generic type that satisfies 'Record<string, string | undefined>'
+  const dispatch = useDispatch<AppDispatch>();
   const { pageNumber } = useParams<{ pageNumber: string }>();
-
   const { itemId } = useParams<{ itemId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
 
+  const starWarsData = useSelector(
+    (state: RootState) => state.starWarsList.data,
+  );
+  const isLoading = useSelector(
+    (state: RootState) => state.starWarsList.isLoading,
+  );
+  const currentPage = useSelector(
+    (state: RootState) => state.starWarsList.currentPage,
+  );
+  const nextPage = useSelector(
+    (state: RootState) => state.starWarsList.nextPage,
+  );
+  const previousPage = useSelector(
+    (state: RootState) => state.starWarsList.previousPage,
+  );
+  const { theme, toggleTheme } = useTheme();
+
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      const savedInputValue = localStorage.getItem(INPUT_VALUE);
-      const data = await fetchStarWarsData(
-        savedInputValue,
-        pageNumber ? parseInt(pageNumber) : null,
-      );
-
-      setPreviousPage(
-        data.previous ? parseInt(data.previous.split('=').pop()!) : null,
-      );
-      setNextPage(data.next ? parseInt(data.next.split('=').pop()!) : null);
-
-      setInitialSearchValue(savedInputValue);
-      setStarWarsData(data);
-    };
-
-    fetchData().then(() => {
-      setIsLoading(false);
-    });
-  }, [pageNumber]);
-
-  const handleSearch = async (value: string | null) => {
-    setIsLoading(true);
-    const data = await fetchStarWarsData(value);
-
-    if (data) {
-      setStarWarsData(data);
-    }
-
-    setIsLoading(false);
-  };
+    dispatch(
+      fetchStarWarsList({
+        query: localStorage.getItem(INPUT_VALUE),
+        pageNumber: pageNumber ? parseInt(pageNumber) : null,
+      }),
+    );
+  }, [pageNumber, dispatch]);
 
   useEffect(() => {
     if (pageNumber) {
-      setCurrentPage(parseInt(pageNumber));
+      dispatch(setCurrentPage(parseInt(pageNumber)));
     }
-  }, [pageNumber]);
+  }, [pageNumber, dispatch]);
 
-  const goToNextPage = async () => {
+  const handleSearch = async (value: string | null) => {
+    dispatch(fetchStarWarsList({ query: value, pageNumber: 1 }));
+  };
+
+  const goToNextPage = () => {
     const currentPage = location.pathname;
     const details = currentPage.indexOf('/details/');
     let newPath = '/';
@@ -84,7 +71,7 @@ const MainPage: React.FC = () => {
     navigate(newPath);
   };
 
-  const goToPreviousPage = async () => {
+  const goToPreviousPage = () => {
     const previousPageNumber = pageNumber ? parseInt(pageNumber) - 1 : 0;
     const currentPage = location.pathname;
     const detailsIndex = currentPage.indexOf('/details/');
@@ -109,7 +96,10 @@ const MainPage: React.FC = () => {
       <ErrorBoundary>
         <BuggyButton />
       </ErrorBoundary>
-      <SearchInput initialValue={initialSearchValue} onSearch={handleSearch} />
+      <SearchInput
+        initialValue={localStorage.getItem(INPUT_VALUE)}
+        onSearch={handleSearch}
+      />
       <div className={itemId ? 'main-wrapper-grid' : ''}>
         <div>
           <Loader isLoading={isLoading} />
