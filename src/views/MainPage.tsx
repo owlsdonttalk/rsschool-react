@@ -10,10 +10,10 @@ import {
   Loader,
 } from '@components';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useTheme } from '../../hooks/useThemeHook';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store';
 import { fetchStarWarsList, setCurrentPage } from '../store/starWarsListSlice';
+import ToggleThemeButton from '../components/ToggleThemeButton.tsx';
 
 const MainPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,7 +37,6 @@ const MainPage: React.FC = () => {
   const previousPage = useSelector(
     (state: RootState) => state.starWarsList.previousPage,
   );
-  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     dispatch(
@@ -88,18 +87,18 @@ const MainPage: React.FC = () => {
 
   return (
     <div className="main-wrapper">
-      <div className={theme === 'light' ? 'light-theme' : 'dark-theme'}>
-        <p>theme: {theme}</p>
-        <button onClick={toggleTheme}>Toggle Theme</button>
-      </div>
+      <nav>
+        <ToggleThemeButton />
+        <SearchInput
+          initialValue={localStorage.getItem(INPUT_VALUE)}
+          onSearch={handleSearch}
+        />
+        <ErrorBoundary>
+          <BuggyButton />
+        </ErrorBoundary>
+      </nav>
       {currentPage}
-      <ErrorBoundary>
-        <BuggyButton />
-      </ErrorBoundary>
-      <SearchInput
-        initialValue={localStorage.getItem(INPUT_VALUE)}
-        onSearch={handleSearch}
-      />
+
       <div className={itemId ? 'main-wrapper-grid' : ''}>
         <div>
           <Loader isLoading={isLoading} />
