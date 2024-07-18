@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchStarWarsDetailedData } from '@helpers';
 import { Loader } from '@components';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../store/store';
+import { fetchStarWarsDetails } from '../store/starWarsDetailedDataSlice.ts';
 
 const Details: React.FC = () => {
   const { itemId } = useParams<{ itemId: string }>();
-  const [detailedData, setDetailedData] = useState<Record<string, string>>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const detailedData = useSelector(
+    (state: RootState) => state.starWars.detailedData,
+  );
+  const isLoading = useSelector((state: RootState) => state.starWars.isLoading);
+  const count = useSelector((state: RootState) => state.counter.value);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!itemId) {
-        return;
-      }
-
-      setIsLoading(true);
-      const data = await fetchStarWarsDetailedData(itemId);
-      setDetailedData(data);
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, [itemId]);
+    if (itemId) {
+      dispatch(fetchStarWarsDetails(itemId));
+    }
+  }, [itemId, dispatch]);
 
   const handleClose = () => {
     navigate('../../');
@@ -38,7 +36,7 @@ const Details: React.FC = () => {
             <div className="detailed-header">
               <h2>Details</h2>
               <button className="close-button" onClick={handleClose}>
-                (x)
+                (x) {count}
               </button>
             </div>
             {Object.keys(detailedData).map((key, index) => (

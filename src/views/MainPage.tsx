@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { INPUT_VALUE } from '@constants';
 import { fetchStarWarsData, filterPersonData } from '@helpers';
-import { StarWarsData, ThemeContextProps } from '@types';
+import { StarWarsData } from '@types';
 import {
   BuggyButton,
   ErrorBoundary,
@@ -22,7 +22,7 @@ const MainPage: React.FC = () => {
   const [nextPage, setNextPage] = useState<number | null>(null);
   const [previousPage, setPreviousPage] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { theme, toggleTheme } = useTheme<ThemeContextProps>();
+  const { theme, toggleTheme } = useTheme();
 
   // UseParams should have generic type that satisfies 'Record<string, string | undefined>'
   const { pageNumber } = useParams<{ pageNumber: string }>();
@@ -81,7 +81,7 @@ const MainPage: React.FC = () => {
       newPath = `/page/${nextPage}`;
     }
 
-    await navigate(newPath);
+    navigate(newPath);
   };
 
   const goToPreviousPage = async () => {
@@ -96,11 +96,11 @@ const MainPage: React.FC = () => {
       newPath = `/page/${previousPageNumber}`;
     }
 
-    await navigate(newPath);
+    navigate(newPath);
   };
 
   return (
-    <>
+    <div className="main-wrapper">
       <div className={theme === 'light' ? 'light-theme' : 'dark-theme'}>
         <p>theme: {theme}</p>
         <button onClick={toggleTheme}>Toggle Theme</button>
@@ -127,7 +127,7 @@ const MainPage: React.FC = () => {
         </div>
         <Outlet />
       </div>
-    </>
+    </div>
   );
 };
 
