@@ -42,6 +42,6 @@
     "constants",
     "src/tests",
     "./**/*.tsx",
-    "hooks",
+    "hooks/*.ts",
   ]
 }

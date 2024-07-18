@@ -1,29 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '@components';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../store/store';
-import { fetchStarWarsDetails } from '../store/starWarsDetailedDataSlice.ts';
+import { useGetStarWarsDetailsQuery } from '../store/starWarsApi';
+import { StarWarsDetailedData } from '@types';
 
 const Details: React.FC = () => {
   const { itemId } = useParams<{ itemId: string }>();
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const { pageNumber } = useParams<{ pageNumber: string }>();
 
-  const detailedData = useSelector(
-    (state: RootState) => state.starWars.detailedData,
+  const { data: detailedData, isLoading } = useGetStarWarsDetailsQuery(
+    itemId ?? '',
   );
-  const isLoading = useSelector((state: RootState) => state.starWars.isLoading);
-  const count = useSelector((state: RootState) => state.counter.value);
-
-  useEffect(() => {
-    if (itemId) {
-      dispatch(fetchStarWarsDetails(itemId));
-    }
-  }, [itemId, dispatch]);
 
   const handleClose = () => {
-    navigate('../../');
+    navigate(pageNumber !== undefined ? `/page/${pageNumber}` : '/');
   };
 
   return (
@@ -36,12 +27,12 @@ const Details: React.FC = () => {
             <div className="detailed-header">
               <h2>Details</h2>
               <button className="close-button" onClick={handleClose}>
-                (x) {count}
+                (x)
               </button>
             </div>
             {Object.keys(detailedData).map((key, index) => (
               <p className="content" key={index}>
-                <b>{key}:</b> {detailedData[key]}
+                <b>{key}:</b> {detailedData[key as keyof StarWarsDetailedData]}
               </p>
             ))}
           </div>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { SearchInputProps } from '@types';
-import { INPUT_VALUE } from '@constants';
+import useLocalStorage from '../../hooks/useLocalStorage.ts';
 
 const SearchInput: React.FC<SearchInputProps> = (props) => {
   const [inputValue, setInputValue] = useState<string>(
     props.initialValue || '',
   );
+  const [, setSearchWord, removeValueFromLocalStorage] = useLocalStorage();
 
   useEffect(() => {
     setInputValue(props.initialValue || '');
@@ -18,9 +19,9 @@ const SearchInput: React.FC<SearchInputProps> = (props) => {
   const handleSearchClick = () => {
     props.onSearch(inputValue.length > 0 ? inputValue : null);
     if (inputValue) {
-      localStorage.setItem(INPUT_VALUE, inputValue);
+      setSearchWord(inputValue || '');
     } else {
-      localStorage.removeItem(INPUT_VALUE);
+      removeValueFromLocalStorage();
     }
   };
 
