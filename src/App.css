@@ -8,6 +8,7 @@
     --text-white: #1c1e21;
     --text-dark: #e3e3e3;
     --svg-color: var(--svg-light-color);
+    --accent: #ba8fff;
 }
 
 * {
@@ -119,7 +120,7 @@ button.toggle-theme-btn:hover {
     width: 48px;
     height: 48px;
     border: 5px solid #FFF;
-    border-bottom-color: #FF3D00;
+    border-bottom-color: var(--accent);
     border-radius: 50%;
     display: inline-block;
     box-sizing: border-box;
@@ -186,7 +187,25 @@ p.content {
     background: gainsboro;
     padding: 4px 16px;
     border-radius: 11px;
-    background: var(--background-color-accent)
+    background: var(--background-color-accent);
+    position: relative;
+}
+
+.grid-element input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 6px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.grid-element input[type="checkbox"]:checked {
+    appearance: auto;
 }
 
 .error-boundary-btn {

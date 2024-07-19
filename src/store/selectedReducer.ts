@@ -20,8 +20,20 @@ const selectedSlice = createSlice({
         (value) => value !== action.payload,
       );
     },
+    toggleSelected: (state: SelectedState, action: PayloadAction<string>) => {
+      const isSelected: boolean = state.selectedValues.includes(action.payload);
+
+      if (isSelected) {
+        state.selectedValues = state.selectedValues.filter(
+          (value) => value !== action.payload,
+        );
+      } else {
+        state.selectedValues.push(action.payload);
+      }
+    },
   },
 });
 
 export const selectedReducer = selectedSlice.reducer;
-export const { addSelected, removeSelected } = selectedSlice.actions;
+export const { addSelected, removeSelected, toggleSelected } =
+  selectedSlice.actions;
