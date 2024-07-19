@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchStarWarsData } from '@helpers';
 import { StarWarsData } from '@types';
+import { fetchStarWarsData } from '../helpers';
 
 export interface StarWarsListState {
   data: StarWarsData | null;
