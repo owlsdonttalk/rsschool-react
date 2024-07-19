@@ -27,21 +27,21 @@
     /* Aliases */
     "baseUrl": "./",
     "paths": {
-      "@types": ["types", "@testing-library/jest-dom"],
-      "@constants": ["constants"],
-      "@helpers": ["helpers"],
-      "@hooks": ["hooks"],
-      "@components": ["src/components"],
+      "@types": ["src/types/", "@testing-library/jest-dom"],
+      "@constants": ["src/constants/"],
+      "@helpers": ["scr/helpers/"],
+      "@hooks": ["src/hooks/"],
+      "@components": ["src/components/"],
       "@": ["src"]
     }
   },
   "include": [
     "src",
-    "helpers",
-    "types",
-    "constants",
+    "src/helpers/*.ts",
+    "src/hooks/*.ts",
+    "src/types/*.ts",
     "src/tests",
     "./**/*.tsx",
-    "hooks/*.ts",
+    "src/hooks/*.ts"
   ]
 }

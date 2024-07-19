@@ -1,4 +1,4 @@
-import { useTheme } from '../../hooks/useThemeHook.ts';
+import { useTheme } from '@hooks/useThemeHook.ts';
 import { THEME_LIGHT } from '@constants';
 import { useEffect } from 'react';
 

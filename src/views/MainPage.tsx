@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import '../App.css';
-import { filterPersonData } from '@helpers';
 import {
   BuggyButton,
   ErrorBoundary,
@@ -12,7 +11,8 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import ToggleThemeButton from '../components/ToggleThemeButton.tsx';
 import { useGetStarWarsListQuery } from '../store/starWarsApi.ts';
 import Pagination from '../components/Pagination.tsx';
-import useLocalStorage from '../../hooks/useLocalStorage.ts';
+import useLocalStorage from '../hooks/useLocalStorage.ts';
+import { filterPersonData } from '../helpers';
 
 const MainPage: React.FC = () => {
   const { pageNumber } = useParams<{ pageNumber: string }>();

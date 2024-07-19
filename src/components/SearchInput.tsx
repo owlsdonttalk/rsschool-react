@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SearchInputProps } from '@types';
-import useLocalStorage from '../../hooks/useLocalStorage.ts';
+import useLocalStorage from '@hooks/useLocalStorage.ts';
 
 const SearchInput: React.FC<SearchInputProps> = (props) => {
   const [inputValue, setInputValue] = useState<string>(
