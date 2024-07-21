@@ -61,6 +61,7 @@ export interface StarWarsDetailedData {
 }
 
 export interface Person {
+  id: string;
   name: string;
   height: string;
   mass: string;

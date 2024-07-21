@@ -44,10 +44,18 @@ const Pagination: React.FC = () => {
 
   return (
     <div className="navigation">
-      <button disabled={!starWarsData?.previous} onClick={goToPreviousPage}>
+      <button
+        className="styled-btn"
+        disabled={!starWarsData?.previous}
+        onClick={goToPreviousPage}
+      >
         Previous Page
       </button>
-      <button disabled={!starWarsData?.next} onClick={goToNextPage}>
+      <button
+        className="styled-btn"
+        disabled={!starWarsData?.next}
+        onClick={goToNextPage}
+      >
         Next Page
       </button>
     </div>

@@ -78,19 +78,6 @@ body {
     padding: 4px 12px;
 }
 
-.search-input button {
-    border-radius: 8px;
-    border: none;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background: var(--background-color-accent);
-    color: var(--text-color);
-    cursor: pointer;
-    transition: border-color 0.25s;
-}
-
 .search-input__input-field {
     margin: 0 2em;
     border-radius: 8px;
@@ -197,7 +184,7 @@ p.content {
 .grid-element input[type="checkbox"] {
     width: 16px;
     height: 16px;
-    border: 2px solid #000;
+    border: 2px solid var(--text-color);
     border-radius: 5px;
     padding: 6px;
     position: absolute;
@@ -207,26 +194,21 @@ p.content {
     -webkit-appearance: none;
 }
 
+.grid-element .info-svg{
+    position: absolute;
+    top: 8px;
+    right: 30px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
 .grid-element input[type="checkbox"]:checked {
     appearance: auto;
 }
 
 .error-boundary-btn {
     background: transparent;
-}
-
-.navigation button {
-    margin: 8px;
-    border-radius: 8px;
-    border: none;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background: var(--background-color-accent);
-    color: var(--text-color);
-    cursor: pointer;
-    transition: border-color 0.25s;
 }
 
 .flyout-container {
@@ -246,7 +228,7 @@ p.content {
 }
 
 .deselected {
-    bottom: -50px;
+    bottom: -80px;
 }
 
 .selected  {
@@ -264,4 +246,29 @@ p.content {
     color: var(--text-color);
     cursor: pointer;
     transition: border-color 0.25s;
+}
+
+.styled-btn {
+    border-radius: 8px;
+    border: none;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background: var(--background-color-accent);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+.navigation {
+    padding: 8px;
+    justify-content: center;
+    display: flex;
+    gap: 16px;
+}
+
+.empty-flyout{
+    width: 318px;
+    height: 28px;
 }

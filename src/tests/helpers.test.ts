@@ -1,4 +1,4 @@
-import { filterPersonData } from '@helpers';
+import { filterPersonData } from '../helpers';
 
 describe('filterPersonData function', () => {
   it('should filter person data correctly', () => {

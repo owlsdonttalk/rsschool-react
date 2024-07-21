@@ -13,13 +13,28 @@ const SelectedFlyout: React.FC = () => {
     dispatch(deselectAll());
   };
 
-  const handleDownload = () => {};
+  const handleDownload = () => {
+    if (selectedValues.length === 0) return;
+
+    const headers = Object.keys(selectedValues[0]);
+    const headerRow = headers.join(',');
+    const rows = selectedValues.map((obj) => Object.values(obj).join(','));
+
+    const csvContent = `data:text/csv;charset=utf-8,${headerRow}\n${rows.join('\n')}`;
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `${selectedValues.length}_persons.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div
       className={`flyout-container ${selectedValues.length > 0 ? 'selected' : 'deselected'}`}
     >
-      {selectedValues.length > 0 && (
+      {selectedValues.length > 0 ? (
         <>
           <span>
             <strong>Selected:</strong> {selectedValues.length}
@@ -31,6 +46,8 @@ const SelectedFlyout: React.FC = () => {
             Download
           </button>
         </>
+      ) : (
+        <div className="empty-flyout"></div>
       )}
     </div>
   );

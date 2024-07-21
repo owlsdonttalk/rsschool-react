@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SearchInputProps } from '@types';
-import useLocalStorage from '@hooks/useLocalStorage.ts';
+import useLocalStorage from '../hooks/useLocalStorage.ts';
 
 const SearchInput: React.FC<SearchInputProps> = (props) => {
   const [inputValue, setInputValue] = useState<string>(
@@ -34,7 +34,9 @@ const SearchInput: React.FC<SearchInputProps> = (props) => {
         onChange={handleInputChange}
         placeholder="Search..."
       />
-      <button onClick={handleSearchClick}>Search</button>
+      <button className="styled-btn" onClick={handleSearchClick}>
+        Search
+      </button>
     </span>
   );
 };
