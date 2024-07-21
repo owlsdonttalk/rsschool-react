@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, Mock } from 'vitest';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Details from '../views/Details.tsx';
@@ -7,7 +7,7 @@ import { store } from '../store/store.ts';
 import { useGetStarWarsDetailsQuery } from '../store/starWarsApi';
 
 interface StarWarsApiMock {
-    useGetStarWarsDetailsQuery: vi.Mock;
+    useGetStarWarsDetailsQuery: Mock;
 }
 
 vi.mock('../store/starWarsApi', async (importOriginal) => {
@@ -26,7 +26,7 @@ const mockDetailedData = {
 
 describe('Details', () => {
     it('should render and display data', async () => {
-        (useGetStarWarsDetailsQuery as vi.Mock).mockReturnValue({
+        (useGetStarWarsDetailsQuery as Mock).mockReturnValue({
             data: mockDetailedData,
             isLoading: false,
             isFetching: false,
