@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchStarWarsDetailedData } from '@helpers';
+import { fetchStarWarsDetailedData } from '../helpers';
 
 export interface StarWarsState {
   detailedData: Record<string, string> | null;

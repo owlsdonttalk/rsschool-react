@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { counterReducer } from './counterReducer';
 import { starWarsApi } from './starWarsApi';
 import { selectedReducer } from './selectedReducer.ts';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     selected: selectedReducer,
     [starWarsApi.reducerPath]: starWarsApi.reducer,
   },

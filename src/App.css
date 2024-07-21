@@ -19,7 +19,6 @@
 
 #root {
     text-align: center;
-    min-height: 200vh;
     width: 100%;
 }
 
@@ -49,6 +48,10 @@ body {
 .main-wrapper {
     margin: 0 auto;
     min-height: 100vh;
+}
+
+.content-wrapper{
+    padding: 32px;
 }
 
 .main-wrapper nav {
@@ -177,12 +180,12 @@ p.content {
 .content-grid {
     display: flex;
     gap: 32px;
-    padding: 32px;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: flex-start;
 }
 
 .grid-element {
+    width: 200px;
     text-align: left;
     background: gainsboro;
     padding: 4px 16px;
@@ -221,6 +224,43 @@ p.content {
     font-weight: 500;
     font-family: inherit;
     background: var(--background-color-accent);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+.flyout-container {
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--background-color-accent);
+    color: var(--text-color);
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: bottom 0.3s ease-out;
+}
+
+.deselected {
+    bottom: -50px;
+}
+
+.selected  {
+    bottom: 20px;
+}
+
+.flyout-btn {
+    border-radius: 8px;
+    border: none;
+    padding: 0.3em 0.6em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background: var(--background-color);
     color: var(--text-color);
     cursor: pointer;
     transition: border-color 0.25s;

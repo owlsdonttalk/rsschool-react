@@ -31,9 +31,12 @@ const selectedSlice = createSlice({
         state.selectedValues.push(action.payload);
       }
     },
+    deselectAll: (state: SelectedState) => {
+      state.selectedValues = [];
+    },
   },
 });
 
 export const selectedReducer = selectedSlice.reducer;
-export const { addSelected, removeSelected, toggleSelected } =
+export const { addSelected, removeSelected, toggleSelected, deselectAll } =
   selectedSlice.actions;

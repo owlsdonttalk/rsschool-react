@@ -1,6 +1,6 @@
-import { useTheme } from '@hooks/useThemeHook.ts';
 import { THEME_LIGHT } from '@constants';
 import { useEffect } from 'react';
+import { useTheme } from '../hooks/useThemeHook.ts';
 
 const ToggleThemeButton = () => {
   const { theme, toggleTheme } = useTheme();
