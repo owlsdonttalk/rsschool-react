@@ -1,49 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchStarWarsDetailedData } from '@helpers';
 import { Loader } from '@components';
+import { useGetStarWarsDetailsQuery } from '../store/starWarsApi';
+import { StarWarsDetailedData } from '@types';
 
 const Details: React.FC = () => {
   const { itemId } = useParams<{ itemId: string }>();
-  const [detailedData, setDetailedData] = useState<Record<string, string>>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { pageNumber } = useParams<{ pageNumber: string }>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!itemId) {
-        return;
-      }
+  const {
+    data: detailedData,
+    isLoading,
+    isFetching,
+  } = useGetStarWarsDetailsQuery(itemId ?? '');
 
-      setIsLoading(true);
-      const data = await fetchStarWarsDetailedData(itemId);
-      setDetailedData(data);
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, [itemId]);
+  const isLoadingOrFetchings = useMemo(() => {
+    return isFetching || isLoading;
+  }, [isFetching, isLoading]);
 
   const handleClose = () => {
-    navigate('../../');
+    navigate(pageNumber !== undefined ? `/page/${pageNumber}` : '/');
   };
 
   return (
     <div className="detailed-view">
-      {isLoading ? (
-        <Loader isLoading={isLoading} />
+      {isLoadingOrFetchings ? (
+        <Loader isLoading={isLoadingOrFetchings} />
       ) : (
         detailedData && (
           <div className="detailed-view__content">
             <div className="detailed-header">
               <h2>Details</h2>
-              <button className="close-button" onClick={handleClose}>
+              <button className="close-button styled-btn" onClick={handleClose}>
                 (x)
               </button>
             </div>
             {Object.keys(detailedData).map((key, index) => (
               <p className="content" key={index}>
-                <b>{key}:</b> {detailedData[key]}
+                <b>{key}:</b> {detailedData[key as keyof StarWarsDetailedData]}
               </p>
             ))}
           </div>
