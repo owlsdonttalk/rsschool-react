@@ -6,9 +6,9 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/components'),
-      '@constants': path.resolve(__dirname, './constants'),
-      '@hooks': path.resolve(__dirname, './hooks'),
-      '@helpers': path.resolve(__dirname, './helpers'),
+      '@constants': path.resolve(__dirname, './src/constants'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@helpers': path.resolve(__dirname, './src/helpers'),
     },
   },
   test: {
@@ -17,5 +17,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: 'src/tests/setup.ts',
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
+      exclude: ['src/tests/**', 'src/main.tsx'],
+    },
   },
 });

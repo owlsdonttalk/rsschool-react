@@ -16,6 +16,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["vitest/globals"],
 
     /* Linting */
     "strict": true,
@@ -36,12 +37,8 @@
     }
   },
   "include": [
-    "src",
-    "src/helpers/*.ts",
-    "src/hooks/*.ts",
-    "src/types/*.ts",
-    "src/tests",
     "./**/*.tsx",
-    "src/hooks/*.ts"
+    "./**/*.ts",
+    "src/tests/**/.ts"
   ]
 }

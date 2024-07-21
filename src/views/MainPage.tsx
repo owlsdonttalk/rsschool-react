@@ -5,15 +5,14 @@ import {
   ErrorBoundary,
   SearchInput,
   ContentGrid,
-  Loader,
+  Loader, ToggleThemeButton,
 } from '@components';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import ToggleThemeButton from '../components/ToggleThemeButton.tsx';
 import { useGetStarWarsListQuery } from '../store/starWarsApi.ts';
 import Pagination from '../components/Pagination.tsx';
 import useLocalStorage from '../hooks/useLocalStorage.ts';
 import { filterPersonData } from '../helpers';
-import SelectedFlyout from '../components/SelectedFlyout.tsx';
+import SelectedFlyout from "../components/SelectedFlyout.tsx";
 
 const MainPage: React.FC = () => {
   const { pageNumber } = useParams<{ pageNumber: string }>();
